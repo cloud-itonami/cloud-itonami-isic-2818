@@ -1,0 +1,37 @@
+{:itonami.blueprint/id "cloud-itonami-isic-2818"
+ :itonami.blueprint/name "Manufacture of power-driven hand tools"
+ :itonami.blueprint/isic-rev5 "2818"
+ :itonami.blueprint/domain :power-tools/manufacturing
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:worker-safety :electrical-safety :consumer-safety]
+ :itonami.blueprint/governor :power-driven-hand-tool-plant-operations-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :eda :cae]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "PowerToolAdvisor ⊣ Power-Driven Hand Tool Plant Operations Governor,
+ langgraph-clj StateGraph, append-only audit ledger. A plant OPERATIONS
+ COORDINATION actor for power-driven hand tool manufacturing (motor-
+ assembly/housing-molding/test lines producing finished drills, saws,
+ sanders and similar hand-held power tools) -- not direct motor-
+ assembly/housing-molding/test-bench-equipment control authority and
+ not electrical-safety-certification authority (e.g. UL/CE compliance
+ mark). Four ops (`:log-production-batch` / `:schedule-maintenance` /
+ `:flag-safety-concern` / `:coordinate-shipment`), all `:effect
+ :propose` only. Twelve concrete governor checks elaborate this
+ blueprint's four HARD invariants: propose-only effect, closed op
+ allowlist, closed proposal-effect allowlist (no direct motor-assembly/
+ housing-molding/test-bench-equipment control), permanent equipment-
+ actuate block, permanent safety-certification-authority block (this
+ actor never self-issues an electrical-safety compliance mark),
+ independent equipment verification/registration before maintenance
+ scheduling, independent batch verification/registration before
+ shipment coordination, independent shipment-quantity recompute
+ against the batch's own logged production quantity, double-schedule
+ guard, product-type validation, hipot-test-voltage plausibility
+ validation, and defect-rate plausibility validation. Safety-concern
+ flagging (electrical-safety/motor-overheat/UL-CE-compliance concern)
+ ALWAYS escalates to a human plant supervisor; `:log-production-batch`
+ is the only op eligible to auto-commit, and only at phase 3 when
+ governor-clean."}
