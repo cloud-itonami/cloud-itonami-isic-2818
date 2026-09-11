@@ -6,7 +6,7 @@
   no generator at all. This namespace drives the REAL actor stack
   (`powertoolmfg.operation` -> `powertoolmfg.governor` -> `powertoolmfg.store`)
   through a scenario adapted from this repo's own `powertoolmfg.sim` demo
-  driver (`clojure -M:dev:run`, confirmed to run correctly against the real
+  driver (`kbb -M:dev:run`, confirmed to run correctly against the real
   seeded batch/equipment directory before this file was written -- unlike
   `cloud-itonami-isic-851`'s `schoolops.sim`, this repo's own sim driver
   uses ids that DO match `powertoolmfg.store/sample-batches` /
@@ -20,7 +20,7 @@
   timestamps in the page content, byte-identical across reruns against the
   same seed (verified by diffing two consecutive runs).
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -173,7 +173,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>Production batches</h2>\n"
-     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>powertoolmfg.store</code> via <code>powertoolmfg.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>\n"
+     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>powertoolmfg.store</code> via <code>powertoolmfg.render-html</code> (<code>kbb -M:dev:render-html</code>), regenerated nightly.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Batch</th><th>Product type</th><th>Model</th><th>Hipot test</th><th>Shipped / Quantity</th><th>Defect rate</th><th>QC status</th><th>Last op status</th></tr></thead>\n"
      "      <tbody>\n"
