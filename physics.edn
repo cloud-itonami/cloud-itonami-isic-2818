@@ -1,0 +1,32 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README: the ISIC 2818 plant assembles the motor, moulds the housing and
+;; tests finished drills, saws and sanders (including hipot double-insulation
+;; testing). The robots' physical work: the endurance run that checks whether
+;; the grip of the moulded housing stays holdable while the motor runs hot,
+;; and placing the tool into the hipot fixture.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-2818"
+ :cases
+ [{:id :grip-temperature-run
+   :kind :thermal
+   :procedure "30-minute endurance run: air inside the motor compartment heats the 2.5 mm glass-filled PA6 housing wall from inside; the grip surface is cooled by room air at 25 C"
+   :params {:thickness-m 0.0025 :conductivity-w-mk 0.35 :density-kg-m3 1350.0 :specific-heat-j-kgk 1500.0
+            :t0-c 25.0 :h-front-w-m2k 30.0 :t-back-ambient-c 25.0 :h-back-w-m2k 10.0
+            :threshold-c 60.0 :duration-s 1800.0 :nodes 6}
+   :sweep {:param :t-hot-c :values [60.0 75.0 90.0 105.0 120.0]}
+   :quantity :peak-back-c
+   :limit {:max 60.0 :basis "estimate: holdable grip temperature for a plastic handle; the product's IEC 62841-1 handle-temperature limit is not yet sourced here, the inner-air h of 30 W/m2K and PA6-GF properties are estimates"}
+   :boundary {:lo 40.0 :hi 150.0}}
+  {:id :tool-into-hipot-fixture
+   :kind :manipulator
+   :procedure "arm lifts a finished power tool from the assembly line into the hipot / double-insulation test fixture"
+   :params {:l1-m 0.45 :l2-m 0.40 :m1-kg 4.0 :m2-kg 2.5
+            :from [0.55 0.05] :to [0.20 0.45] :duration-s 1.5 :steps 400}
+   :sweep {:param :payload-kg :values [0.8 1.5 2.5 3.5 5.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 50.0 :basis "estimate: continuous shoulder torque of a ~5 kg-class collaborative arm"}
+   :boundary {:lo 0.1 :hi 30.0}}]}
